@@ -2,6 +2,7 @@ package com.example.same_image;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,13 +28,14 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     TextView title_image;
-    String image, albumId, id, thumbnailUrl;
-    String title;
+//    String image, albumId, id, thumbnailUrl;
+//    String title;
     EditText search;
     RecyclerView recyclerView;
     SwipeRefreshLayout swipeRefreshLayout;
     List<Data_Model> data_models = new ArrayList<>();
-Adapter adapter;
+    CoordinatorLayout coordinatorLayout;
+    Adapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,7 @@ Adapter adapter;
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_resfresh);
         title_image = findViewById(R.id.title);
         recyclerView = findViewById(R.id.recyc);
+        coordinatorLayout=findViewById(R.id.coordinate);
         search = findViewById(R.id.textView_search);
 
         enableSwipeToDeleteAndUndo();
@@ -135,24 +138,23 @@ Adapter adapter;
 
 
                 final int position = viewHolder.getAdapterPosition();
-//                final String item = adapter.getData().get(position);
-
+                final Data_Model item = adapter.getData().get(position);
                 adapter.removeItem(position);
 
 
-//                Snackbar snackbar = Snackbar
-//                        .make(coordinatorLayout, "Item was removed from the list.", Snackbar.LENGTH_LONG);
-//                snackbar.setAction("UNDO", new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
+                Snackbar snackbar = Snackbar
+                        .make(coordinatorLayout, "Item was removed from the list.", Snackbar.LENGTH_LONG);
+                snackbar.setAction("UNDO", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        adapter.restoreItem(item, position);
+                        recyclerView.scrollToPosition(position);
+                    }
+                });
 //
-//                        adapter.restoreItem(data_models, position);
-//                        recyclerView.scrollToPosition(position);
-//                    }
-////                });
-//
-//                snackbar.setActionTextColor(Color.YELLOW);
-//                snackbar.show();
+                snackbar.setActionTextColor(Color.YELLOW);
+                snackbar.show();
 
             }
         };

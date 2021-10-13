@@ -22,7 +22,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Viewholder> {
         this.list = list;
         this.context = context;
     }
-    public void filterList(ArrayList<Data_Model> filterllist) {
+    public void filterList(List<Data_Model> filterllist) {
         // below line is to add our filtered
         // list in our course array list.
         list = filterllist;
@@ -41,12 +41,13 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Viewholder> {
         notifyItemRemoved(position);
     }
 
-    public void restoreItem(List<Data_Model> list, int position) {
-        list.add(position, (Data_Model) list);
+    public void restoreItem(Data_Model list1, int position) {
+        list.add(position, list1);
         notifyItemInserted(position);
     }
-    public int getData() {
-        return list.size();
+
+    public List<Data_Model> getData() {
+        return list;
     }
     @Override
     public void onBindViewHolder(@NonNull Viewholder holder, int position) {
